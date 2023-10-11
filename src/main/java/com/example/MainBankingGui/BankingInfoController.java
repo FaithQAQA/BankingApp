@@ -26,6 +26,7 @@ import java.util.List;
 import com.example.App;
 import com.example.Bean.Transaction;
 import com.example.Bean.UserInfo;
+import com.example.TransactionsGui.TransactionController;
 
 public class BankingInfoController {
     @FXML
@@ -67,12 +68,13 @@ UserInfo idgetter = new UserInfo();
        TransactionDataGetter(null);
            
     }
-
+String passdata ="";
     public void setData(String data) throws SQLException  {
         WelcomeUser.setText("Welcome back " + data);
         getBalance(data);
         getCardNumber(data);
         TransactionDataGetter(data);
+        passdata = data;
         
 
     }
@@ -184,9 +186,11 @@ private String cardNumberChecker(Long cardNum) {
     void MakeTransaction(ActionEvent event) throws IOException 
     {
                  
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/TransactionsGui/Transaction.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("com/example/TransactionsGui/Transaction.fxml"));
             Parent root = loader.load();
-
+            TransactionController  transactionController = loader.getController();
+            String dataToPass = passdata;
+            ((TransactionController) transactionController).setData(dataToPass);
     // Set the scene and how the edit window
     Stage primaryStage = new Stage();
     Scene scene = new Scene(root, 1150, 600);
