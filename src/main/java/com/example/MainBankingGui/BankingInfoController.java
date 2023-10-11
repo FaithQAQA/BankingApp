@@ -2,13 +2,20 @@ package com.example.MainBankingGui;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -42,6 +49,9 @@ public class BankingInfoController {
     @FXML
     private TableColumn<Transaction, String> transactionTypeColumn;
     
+    @FXML
+    private Button AddTransaction;
+ 
 
     @FXML
     private Label CardNumOfAccount;
@@ -167,5 +177,21 @@ private String cardNumberChecker(Long cardNum) {
         Timeline timeline = new Timeline(keyFrame);
         timeline.setCycleCount(Timeline.INDEFINITE); // Repeat indefinitely
         timeline.play();
+    }
+
+
+        @FXML
+    void MakeTransaction(ActionEvent event) throws IOException 
+    {
+                 
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/TransactionsGui/Transaction.fxml"));
+            Parent root = loader.load();
+
+    // Set the scene and how the edit window
+    Stage primaryStage = new Stage();
+    Scene scene = new Scene(root, 1150, 600);
+    primaryStage.setTitle("MainPage");
+    primaryStage.setScene(scene);
+    primaryStage.show();
     }
 }

@@ -217,6 +217,21 @@ public class App {
         return CardNumber;
 }
 
+public static void InsertIntoTransactionTable(Connection connection, int id, double amount, String desc, String transactionType) throws SQLException
+{
+    String insertQuery = "INSERT INTO bankinginfo.transaction (transaction_type, amount, description, user_id) VALUES (?,?,?,?)";
+
+    try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
+        preparedStatement.setString(1, transactionType);
+        preparedStatement.setDouble(2, amount);
+        preparedStatement.setString(3, desc);
+        preparedStatement.setInt(4, id);
+
+        preparedStatement.executeUpdate();
+    }
+
+}
+
 public static List<Transaction> getTransactionMainPage(Connection connection, int userId) throws SQLException {
     List<Transaction> transactions = new ArrayList<>();
 
