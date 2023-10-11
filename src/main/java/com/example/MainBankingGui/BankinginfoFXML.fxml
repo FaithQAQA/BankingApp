@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1090.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.MainBankingGui.BankingInfoController">
+   <center>
+      <AnchorPane prefHeight="600.0" prefWidth="855.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="619.0" layoutY="70.0" text="Balance">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="Balance" layoutX="618.0" layoutY="119.0" text="\$5 4000" textFill="#1a388a">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="WelcomeUser" layoutX="79.0" layoutY="22.0" text="Welcome Back User" />
+            <Label layoutX="98.0" layoutY="73.0" text="My Cards">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="Date" layoutX="749.0" layoutY="22.0" text="Date" />
+            <Label fx:id="CardNumOfAccount" layoutX="614.0" layoutY="168.0" text="Card Number" />
+         </children>
+      </AnchorPane>
+   </center>
+   <left>
+    <TableView fx:id="transactionData" prefHeight="600.0" prefWidth="272.0" BorderPane.alignment="CENTER">
+        <columns>
+            <TableColumn prefWidth="87.0" text="Transaction" />
+            <TableColumn prefWidth="96.0" text="Desc" />
+            <TableColumn prefWidth="87.0" text="Amount" />
+        </columns>
+    </TableView>
+   </left>
+</BorderPane>

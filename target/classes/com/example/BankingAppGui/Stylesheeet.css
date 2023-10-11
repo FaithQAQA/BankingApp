@@ -1,0 +1,9 @@
+/* Define the style for the BankingApp class */
+.BankingApp {
+    font-size: 24px; /* Adjust the font size as needed */
+    font-weight: bold; /* Make the text bold */
+    color: #0070e0; /* Set the text color to a suitable banking app color */
+    margin-bottom: 20px; /* Add some space below the label */
+    /* You can also add other styles like text alignment, padding, etc. */
+  }
+  
