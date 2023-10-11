@@ -233,8 +233,15 @@ public static List<Transaction> getTransactionMainPage(Connection connection, in
                 String transactionType = resultSet.getString("transaction_type");
 
                 // Create a Transaction object and add it to the list
+                System.out.println(amount);
+    
+
                 Transaction transaction = new Transaction(amount, description, transactionType);
                 transactions.add(transaction);
+                System.out.println(transaction.getTransactionType());
+                System.out.println(transaction.getAmount());
+                System.out.println(transaction.getDescription());
+
             }
         }
     }

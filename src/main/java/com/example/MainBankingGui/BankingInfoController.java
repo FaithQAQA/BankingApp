@@ -4,7 +4,9 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Duration;
 
 import java.sql.Connection;
@@ -31,7 +33,15 @@ public class BankingInfoController {
     @FXML
     private TableView<Transaction> transactionData;
 
-
+    @FXML
+    private TableColumn<Transaction, Double> amountColumn;
+    
+    @FXML
+    private TableColumn<Transaction, String> descriptionColumn;
+    
+    @FXML
+    private TableColumn<Transaction, String> transactionTypeColumn;
+    
 
     @FXML
     private Label CardNumOfAccount;
@@ -97,13 +107,21 @@ UserInfo idgetter = new UserInfo();
             // Retrieve transaction data from the database
             List<Transaction> transactions = App.getTransactionMainPage(connection, userId);
     
-            // Clear existing items in the TableView (optional)
-            transactionData.getItems().clear();
+            System.out.println("Number of transactions retrieved: " + transactions.size()); // Debug statement
     
+    amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
+descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+transactionTypeColumn.setCellValueFactory(new PropertyValueFactory<>("transactionType"));
+
             // Set the items for your TableView
             transactionData.getItems().addAll(transactions);
+
+
+
+            
         }
     }
+    
     
     
  private void getCardNumber(String data) throws SQLException {
