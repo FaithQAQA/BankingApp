@@ -186,8 +186,8 @@ private String cardNumberChecker(Long cardNum) {
     void MakeTransaction(ActionEvent event) throws IOException 
     {
                  
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("com/example/TransactionsGui/Transaction.fxml"));
-            Parent root = loader.load();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/TransactionsGui/Transaction.fxml"));
+        Parent root = loader.load();
             TransactionController  transactionController = loader.getController();
             String dataToPass = passdata;
             ((TransactionController) transactionController).setData(dataToPass);

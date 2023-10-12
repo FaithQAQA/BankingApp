@@ -77,6 +77,23 @@ public class App {
     return userId;
 }
 
+    public static int getTransactionAccountID(Connection connection, int id) throws SQLException {
+    String selectQuery = "SELECT account_id FROM transaction WHERE user_id = ?";
+    int account_id = -1; // Initialize with a default value that indicates no user found
+
+    try (PreparedStatement preparedStatement = connection.prepareStatement(selectQuery)) {
+        preparedStatement.setInt(1, id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        if (resultSet.next()) {
+            account_id = resultSet.getInt("account_id");
+            idGetter.setId(account_id);
+        }
+    }
+
+    return account_id;
+}
+
 
 
     public static void createUserWithAccount(Connection connection, String username, String plaintextPassword, String accountType, double initialBalance, Long cardNumber) throws SQLException {
@@ -217,15 +234,16 @@ public class App {
         return CardNumber;
 }
 
-public static void InsertIntoTransactionTable(Connection connection, int id, double amount, String desc, String transactionType) throws SQLException
+public static void InsertIntoTransactionTable(Connection connection, int id, double amount, String desc, String transactionType, int accountid) throws SQLException
 {
-    String insertQuery = "INSERT INTO bankinginfo.transaction (transaction_type, amount, description, user_id) VALUES (?,?,?,?)";
+    String insertQuery = "INSERT INTO bankinginfo.transaction (transaction_type, amount, description, user_id, account_id) VALUES (?,?,?,?,?)";
 
     try (PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)) {
         preparedStatement.setString(1, transactionType);
         preparedStatement.setDouble(2, amount);
         preparedStatement.setString(3, desc);
         preparedStatement.setInt(4, id);
+        preparedStatement.setInt(5, accountid);
 
         preparedStatement.executeUpdate();
     }
