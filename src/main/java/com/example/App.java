@@ -7,12 +7,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.example.Bean.Transaction;
 import com.example.Bean.UserInfo;
+import com.example.TransactionsGui.TransactionController;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -250,11 +252,30 @@ public static void InsertIntoTransactionTable(Connection connection, int id, dou
 
 }
 
+
+public Long getBalance(Connection connection, int userId) throws SQLException
+{
+String sqlQuery= "SELECT * FROM bankinginfo.account where user_id = ?";
+Long Balance = -1l;
+    try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
+        preparedStatement.setInt(1, userId);
+
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+        
+                 Balance = resultSet.getLong("balance");
+            }
+        }
+    }
+    return Balance;
+}
+
+
 public static List<Transaction> getTransactionMainPage(Connection connection, int userId) throws SQLException {
     List<Transaction> transactions = new ArrayList<>();
 
     // Your SQL query to retrieve transaction data here
-    String sqlQuery = "SELECT amount, description, transaction_type FROM transaction WHERE user_id = ?";
+    String sqlQuery = "SELECT amount, description, transaction_type, transaction_date FROM transaction WHERE user_id = ?";
 
     try (PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
         preparedStatement.setInt(1, userId);
@@ -264,16 +285,20 @@ public static List<Transaction> getTransactionMainPage(Connection connection, in
                 double amount = resultSet.getDouble("amount");
                 String description = resultSet.getString("description");
                 String transactionType = resultSet.getString("transaction_type");
+                Date   dateOfTransaction = resultSet.getDate("transaction_date");
+                Timestamp  dTimestamp = resultSet.getTimestamp("transaction_date");
 
                 // Create a Transaction object and add it to the list
                 System.out.println(amount);
     
 
-                Transaction transaction = new Transaction(amount, description, transactionType);
+                Transaction transaction = new Transaction(amount, description, transactionType, dateOfTransaction, dTimestamp);
                 transactions.add(transaction);
                 System.out.println(transaction.getTransactionType());
                 System.out.println(transaction.getAmount());
                 System.out.println(transaction.getDescription());
+                System.out.println(transaction.getDateOfTransaction());
+                System.out.println(transaction.getTransactionDate());
 
             }
         }
@@ -281,8 +306,6 @@ public static List<Transaction> getTransactionMainPage(Connection connection, in
 
     return transactions;
 }
-
-
 
 
 

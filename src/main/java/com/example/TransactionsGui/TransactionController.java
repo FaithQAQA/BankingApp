@@ -2,12 +2,16 @@ package com.example.TransactionsGui;
 
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import com.example.App;
 import com.example.Bean.Transaction;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,6 +22,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class TransactionController implements Initializable
 {
@@ -28,7 +33,7 @@ public class TransactionController implements Initializable
     private TableColumn<Transaction, Double> Amount;
 
     @FXML
-    private TableColumn<Transaction, String> dateForTable;
+    private TableColumn<Transaction, Date> dateForTable;
 
     @FXML
     private TableColumn<Transaction, String> DescForTable;
@@ -49,9 +54,12 @@ public class TransactionController implements Initializable
     private TextField AmountText;
 
     String TransactionTypeInsertData = "";
+    private String username = ""; 
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL location, ResourceBundle resources) 
+    {
+        
         TransactionPicker.getItems().addAll(
             "Shopping",
             "Expenses",
@@ -74,10 +82,15 @@ public class TransactionController implements Initializable
             TransactionTypeInsertData = newValue;
         });
 
-setData(null);
+ 
     }
 
-    String username = "";
+    public void setData(String dataToPass) {
+        username = dataToPass;
+        tableInt(username);
+    }  
+
+
     @FXML
     void AddNewData(ActionEvent event) {
         String desc = TextAreaDesc.getText();
@@ -95,10 +108,49 @@ setData(null);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        tableInt(username);
+        
     }
 
-    public void setData(String dataToPass) 
-    {
-     username = dataToPass;
+   
+    public void tableInt(String dataToPass) {
+        try {
+            Connection connection = App.establishDatabaseConnection();
+            if (connection != null) {
+                App.useDatabase(connection);
+                // Clear the existing data in the table
+                TransactionTable.getItems().clear();
+                List<Transaction> transactions = App.getTransactionMainPage(connection, App.getUserId(connection, username));
+                ObservableList<Transaction> transactionData = FXCollections.observableArrayList(transactions);
+                 System.out.println("Number of transactions retrieved: " + transactions.size()); // Debug statement
+                TransactionTable.setItems(transactionData);
+                Amount.setCellValueFactory(new PropertyValueFactory<>("amount"));
+                DescForTable.setCellValueFactory(new PropertyValueFactory<>("description"));
+                TransactionType.setCellValueFactory(new PropertyValueFactory<>("transactionType"));
+                // dateForTable.setCellValueFactory(new PropertyValueFactory<>("Date"));
+                dateForTable.setCellValueFactory(new PropertyValueFactory<>("transactionDate")); // Bind to transactionDate property
+
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+
+    public void BalanceCalulator()
+    {
+              try {
+            Connection connection = App.establishDatabaseConnection();
+            if (connection != null) {
+                App.useDatabase(connection);
+                // Clear the existing data in the table
+          
+
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
 }

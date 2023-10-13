@@ -68,6 +68,9 @@ UserInfo idgetter = new UserInfo();
        TransactionDataGetter(null);
            
     }
+
+                TransactionController controller  = new TransactionController();
+
 String passdata ="";
     public void setData(String data) throws SQLException  {
         WelcomeUser.setText("Welcome back " + data);
@@ -119,11 +122,11 @@ String passdata ="";
             // Retrieve transaction data from the database
             List<Transaction> transactions = App.getTransactionMainPage(connection, userId);
     
-            System.out.println("Number of transactions retrieved: " + transactions.size()); // Debug statement
+        //    System.out.println("Number of transactions retrieved: " + transactions.size()); // Debug statement
     
     amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
-descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-transactionTypeColumn.setCellValueFactory(new PropertyValueFactory<>("transactionType"));
+    descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+    transactionTypeColumn.setCellValueFactory(new PropertyValueFactory<>("transactionType"));
 
             // Set the items for your TableView
             transactionData.getItems().addAll(transactions);
@@ -191,6 +194,7 @@ private String cardNumberChecker(Long cardNum) {
             TransactionController  transactionController = loader.getController();
             String dataToPass = passdata;
             ((TransactionController) transactionController).setData(dataToPass);
+            
     // Set the scene and how the edit window
     Stage primaryStage = new Stage();
     Scene scene = new Scene(root, 1150, 600);
