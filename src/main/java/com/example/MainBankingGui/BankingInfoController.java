@@ -69,7 +69,7 @@ UserInfo idgetter = new UserInfo();
            
     }
 
-                TransactionController controller  = new TransactionController();
+           //     TransactionController controller  = new TransactionController();
 
 String passdata ="";
     public void setData(String data) throws SQLException  {
@@ -185,21 +185,27 @@ private String cardNumberChecker(Long cardNum) {
     }
 
 
-        @FXML
-    void MakeTransaction(ActionEvent event) throws IOException 
-    {
-                 
+    @FXML
+    void MakeTransaction(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/TransactionsGui/Transaction.fxml"));
         Parent root = loader.load();
-            TransactionController  transactionController = loader.getController();
-            String dataToPass = passdata;
-            ((TransactionController) transactionController).setData(dataToPass);
-            
-    // Set the scene and how the edit window
-    Stage primaryStage = new Stage();
-    Scene scene = new Scene(root, 1150, 600);
-    primaryStage.setTitle("MainPage");
-    primaryStage.setScene(scene);
-    primaryStage.show();
+        TransactionController transactionController = loader.getController();
+String dataToPass = passdata;
+transactionController.setData(dataToPass, this); // Pass the reference to this controller
+
+       
+        Stage primaryStage = new Stage();
+        Scene scene = new Scene(root, 1150, 600);
+        primaryStage.setTitle("MainPage");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
+    
+
+
+public void setLabel (String Text)
+{
+Balance.setText(Text);
+}
+
 }

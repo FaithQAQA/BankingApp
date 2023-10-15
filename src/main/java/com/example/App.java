@@ -22,6 +22,7 @@ import javafx.scene.control.TableView;
 
 public class App {
 
+    private static Connection databaseConnection;
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "gt64ince";
@@ -29,8 +30,30 @@ public class App {
 
     static UserInfo idGetter = new UserInfo();
     
-    public static Connection establishDatabaseConnection() throws SQLException {
-        return DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+public static Connection establishDatabaseConnection() throws SQLException {
+    return DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+}
+
+    
+    static {
+        try {
+            databaseConnection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Connection getExistingDatabaseConnection() {
+        try {
+            if (databaseConnection == null || databaseConnection.isClosed()) {
+                // If the connection is null or closed, create a new one
+                databaseConnection = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return databaseConnection;
     }
 
     public static void useDatabase(Connection connection) throws SQLException {
@@ -251,9 +274,20 @@ public static void InsertIntoTransactionTable(Connection connection, int id, dou
     }
 
 }
+public static void UpdateBalance(Connection connection, int userId, double balance) {
+    String updateQuery = "UPDATE account SET balance = ? WHERE user_id = ?";
+
+    try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+        preparedStatement.setDouble(1, balance);
+        preparedStatement.setInt(2, userId);
+        preparedStatement.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
 
 
-public Long getBalance(Connection connection, int userId) throws SQLException
+public static Long getBalance(Connection connection, int userId) throws SQLException
 {
 String sqlQuery= "SELECT * FROM bankinginfo.account where user_id = ?";
 Long Balance = -1l;
@@ -294,11 +328,11 @@ public static List<Transaction> getTransactionMainPage(Connection connection, in
 
                 Transaction transaction = new Transaction(amount, description, transactionType, dateOfTransaction, dTimestamp);
                 transactions.add(transaction);
-                System.out.println(transaction.getTransactionType());
-                System.out.println(transaction.getAmount());
-                System.out.println(transaction.getDescription());
-                System.out.println(transaction.getDateOfTransaction());
-                System.out.println(transaction.getTransactionDate());
+          //      System.out.println(transaction.getTransactionType());
+           //     System.out.println(transaction.getAmount());
+             //   System.out.println(transaction.getDescription());
+             //   System.out.println(transaction.getDateOfTransaction());
+             //   System.out.println(transaction.getTransactionDate());
 
             }
         }
