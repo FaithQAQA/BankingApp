@@ -204,10 +204,10 @@ public static Connection establishDatabaseConnection() throws SQLException {
     }
     
     
-    public static int GetBankingInfo(Connection connection, int id) throws SQLException {
+    public static Long GetBankingInfo(Connection connection, int id) throws SQLException {
         String selectBalanceQuery = "SELECT balance FROM account WHERE user_id = ?;";
     
-        int balance= -1;
+        Long balance= -1L;
     
         connection.setAutoCommit(false);
     
@@ -220,7 +220,7 @@ public static Connection establishDatabaseConnection() throws SQLException {
             // Check if there is at least one row in the result set
             if (resultSet.next()) {
                 // Retrieve and assign the balance
-                balance = resultSet.getInt("balance");
+                balance = resultSet.getLong("balance");
                 System.out.println("Balance: " + balance);
             } else {
                 // Handle the case where no records are found

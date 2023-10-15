@@ -87,7 +87,7 @@ String passdata ="";
         String formattedDate = myDateObj.format(myFormatObj);
         Date.setText(formattedDate);
     }
-    public static void setBalanceText(Label balanceLabel, int balance) {
+    public static void setBalanceText(Label balanceLabel, Long balance) {
         // Format the balance as a currency string
         String formattedBalance = String.format("$%,.2f", (double) balance);
     
@@ -104,7 +104,7 @@ String passdata ="";
             
                App.useDatabase(connection);
             //   App.getUserId(connection, data);
-             int bank =  App.GetBankingInfo(connection, App.getUserId(connection, data));  
+             Long bank =  App.GetBankingInfo(connection, App.getUserId(connection, data));  
              setBalanceText(Balance, bank); // Set the formatted balance text
              
 
