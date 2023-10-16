@@ -18,6 +18,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -71,7 +72,50 @@ public class TransactionController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) 
     {
 
-      
+        TransactionType.setCellFactory(column -> new TableCell<Transaction, String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+    
+                if (item == null || empty) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(item);
+    
+                    if (item.equals("Income")) {
+                        // Style for income transactions
+                        setStyle("-fx-background-color: lightgreen; -fx-text-fill: green;");
+                    } else {
+                        // Style for expense transactions
+                        setStyle("-fx-background-color: lightsalmon; -fx-text-fill: red;");
+                    }
+                }
+            }
+        });
+    
+        // Set cell factory for the Amount column
+        Amount.setCellFactory(column -> new TableCell<Transaction, Double>() {
+            @Override
+            protected void updateItem(Double item, boolean empty) {
+                super.updateItem(item, empty);
+    
+                if (item == null || empty) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(String.format("$%,.2f", item));
+    
+                    if (item > 0) {
+                        // Style for positive amounts (income)
+                        setStyle("-fx-text-fill: green;");
+                    } else {
+                        // Style for negative amounts (expenses)
+                        setStyle("-fx-text-fill: red;");
+                    }
+                }
+            }
+        });
         
         TransactionPicker.getItems().addAll(
             "Shopping",
@@ -143,13 +187,13 @@ public class TransactionController implements Initializable {
                     // Calculate the change in balance
                     long balanceChange = 0;
     
-                    // Determine the transaction type (e.g., "Expenses", "Income")
-                    if ("Expenses".equals(TransactionTypeInsertData)) {
-                        balanceChange = (long) (-amount);
-                    } else if ("Income".equals(TransactionTypeInsertData)) {
-                        balanceChange = (long) (+amount);
+                    if ("Income".equals(TransactionTypeInsertData)) {
+                        balanceChange = (long) +amount;
+                    } else {
+                        balanceChange = (long) -amount;
                     }
-    
+                    
+                    
                     // Update the balance
                     Balance += balanceChange;
     
