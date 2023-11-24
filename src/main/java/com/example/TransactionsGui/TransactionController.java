@@ -138,7 +138,6 @@ public class TransactionController implements Initializable {
             System.out.println("Selected Item: " + newValue);
             TransactionTypeInsertData = newValue;
         });
-        // ... Other initialization code ...
     }
 
     public void setData(String dataToPass, BankingInfoController bankingInfoController) {
